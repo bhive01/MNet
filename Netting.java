@@ -1,4 +1,4 @@
-package com.syngenta.imagej.plugins.melons;
+package com.imagej.plugins.melons;
 
 import ij.IJ;
 import ij.ImagePlus;
