@@ -39,13 +39,17 @@
       </javac>
   </target>
 
-  <target name="dist" depends="compile"
-        description="generate the distribution" >
+    <target name="dist" depends="compile" description="generate the distribution" >
     <!-- Create the distribution directory -->
-    <mkdir dir="${dist}/lib"/>
+    <mkdir dir="${dist}"/>
 
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-    <jar jarfile="${dist}/lib/Netting_${DSTAMP}.jar" basedir="${build}"/>
+    <jar jarfile="${dist}/lib/Netting_${DSTAMP}.jar" basedir="${build}">
+        <fileset dir="." includes="plugins.config" />
+        <manifest>
+            <attribute name="Built-By" value="${user.name}"/>
+ 		</manifest>
+    </jar>
   </target>
 
   <target name="clean"
