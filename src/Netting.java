@@ -46,6 +46,10 @@ public class Netting
     private static final int BACKGROUND_MIN = 0;
     private static final int BACKGROUND_MAX = 255;
     private static final int BACKGROUND_DEFAULT = 20;
+    private static final String SUTURE_PARAMETER = "Suture Cutoff";
+    private static final int SUTURE_MIN = 0;
+    private static final int SUTURE_MAX = 255;
+    private static final int SUTURE_DEFAULT = 80;
     private static final String NETTING_PARAMETER = "Netting Mean Cutoff";
     private static final int NETTING_MIN = 0;
     private static final int NETTING_MAX = 255;
@@ -56,6 +60,7 @@ public class Netting
     private int radius;
     private int sensitivity;
     private int background;
+    private int suture;
     private int netting;
 
     // Holds processing results.
@@ -78,6 +83,7 @@ public class Netting
         radius = RADIUS_DEFAULT;
         sensitivity = SENSITIVITY_DEFAULT;
         background = BACKGROUND_DEFAULT;
+        suture = SUTURE_DEFAULT;
         netting = NETTING_DEFAULT;
     }
 
@@ -116,6 +122,7 @@ public class Netting
         dialog.addSlider(SENSITIVITY_PARAMETER, (double) SENSITIVITY_MIN, (double) SENSITIVITY_MAX,
                          (double) sensitivity);
         dialog.addSlider(BACKGROUND_PARAMETER, (double) BACKGROUND_MIN, (double) BACKGROUND_MAX, (double) background);
+        dialog.addSlider(SUTURE_PARAMETER, (double) SUTURE_MIN, (double) SUTURE_MAX, (double) suture);
         dialog.addSlider(NETTING_PARAMETER, (double) NETTING_MIN, (double) NETTING_MAX, (double) netting);
         dialog.addPreviewCheckbox(pfr);
         dialog.addDialogListener(this);
@@ -154,6 +161,7 @@ public class Netting
         radius = (int) gd.getNextNumber();
         sensitivity = (int) gd.getNextNumber();
         background = (int) gd.getNextNumber();
+        suture = (int) gd.getNextNumber();
         netting = (int) gd.getNextNumber();
 
         // Reset progress counter.
@@ -162,7 +170,8 @@ public class Netting
         return angleStep >= ANGLE_STEP_MIN && angleStep <= ANGLE_STEP_MAX
                && radius >= RADIUS_MIN && radius <= RADIUS_MAX
                && sensitivity >= SENSITIVITY_MIN && sensitivity <= SENSITIVITY_MAX
-               && background >= BACKGROUND_MIN && background <= BACKGROUND_MAX
+               && background >= BACKGROUND_MIN && background <= SUTURE_MAX
+               && suture >= SUTURE_MIN && suture <= BACKGROUND_MAX
                && netting >= NETTING_MIN && netting <= NETTING_MAX;
     }
 
@@ -173,6 +182,7 @@ public class Netting
                       + "; radius=" + radius
                       + "; sensitivity=" + sensitivity
                       + "; background=" + background
+                      + "; suture=" + suture
                       + "; netting=" + netting + ')');
 
         // Initialize.
@@ -241,7 +251,7 @@ public class Netting
                     final int x = (int) (StrictMath.cos(rad) * len);
                     final int y = (int) (StrictMath.sin(rad) * len);
                     final int z = pixels[pos + x + y * width] & BLUE_RGB;
-                    if (z > background) {
+                    if (z > suture) {
                         sum += z;
                         count++;
                     }
