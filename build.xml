@@ -6,7 +6,9 @@
   <property name="src" location="src"/>
   <property name="build" location="build"/>
   <property name="dist"  location="dist"/>
-
+  <property name="user.name" value="Brandon Hurr" />
+    
+    
   <target name="init">
     <!-- Create the time stamp -->
     <tstamp/>
@@ -40,23 +42,22 @@
   </target>
 
     <target name="dist" depends="compile" description="generate the distribution" >
-    <!-- Create the distribution directory -->
-    <mkdir dir="${dist}"/>
+        <!-- Create the distribution directory -->
+        <mkdir dir="${dist}"/>
 
-    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-    <jar jarfile="${dist}/lib/Netting_${DSTAMP}.jar" basedir="${build}">
-        <fileset dir="." includes="plugins.config" />
-        <manifest>
-            <attribute name="Built-By" value="${user.name}"/>
- 		</manifest>
-    </jar>
-  </target>
+        <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+        <jar jarfile="${dist}/Netting_${DSTAMP}.jar" basedir="${build}">
+            <fileset dir="." includes="plugins.config" />
+            <fileset dir="${build}" includes="**/*.class" />
+            <manifest>
+                <attribute name="Built-By" value="${user.name}"/>
+            </manifest>
+        </jar>
+    </target>
 
-  <target name="clean"
-        description="clean up" >
+  <target name="clean" description="clean up" >
     <!-- Delete the ${build} and ${dist} directory trees -->
     <delete dir="${build}"/>
-    <delete dir="${dist}"/>
   </target>
 
 </project>
